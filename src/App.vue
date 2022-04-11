@@ -1,17 +1,21 @@
 <template>
   <div>
-    <Header title="Create Hangout" />
-    <router-view></router-view>
+    <Header  />
+    <router-view  ></router-view>
+    <Snackbar />
   </div>
 </template>
 
 <script>
 import Header from "./components/Header";
+import Snackbar from "./components/Snackbar";
+
 
 export default {
   name: "App",
   components: {
     Header,
+    Snackbar
   },
 };
 </script>

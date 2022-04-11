@@ -1,5 +1,8 @@
 <template>
-  <CreateHangout @add-hangout="addHangout" />
+  <CreateHangout v-if="isLoggedIn" @add-hangout="addHangout" />
+  <div v-else>
+    you need to be authorized
+  </div>
 </template>
 
 <script>
@@ -12,9 +15,12 @@ export default {
   data() {
     return {
       hangouts: [],
+      isLoggedIn: false
     };
   },
-  async created() {},
+  async created() {
+    this.isLoggedIn = this.$store.state.user.isLoggedIn
+   },
   methods: {
     async addHangout(hangout) {
       console.log(hangout);
@@ -28,7 +34,7 @@ export default {
 
       this.hangouts = [...this.hangouts, hangout];
 
-    
+
     },
   },
 };

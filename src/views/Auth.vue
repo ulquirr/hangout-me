@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import { LOG_IN_USER, CALL_SNACK_BAR } from "../mutation-types";
+import router from "../router"
+
 export default {
   name: "Auth",
   data() {
@@ -26,31 +29,55 @@ export default {
       login: "",
       password: "",
       errors: [],
+      show: false,
+      msg: "",
+      status: null
     };
   },
   async created() { },
   methods: {
     async onSubmit(e) {
+      let error = false
       e.preventDefault();
-      this.checkForm()
-      const user = {login: this.login, password: this.password }
-      await fetch(`http://127.0.0.1:8000/user/create`, {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(user),
-      }).finally(() => this.$store.commit('updateUser', {...user, isLoggedIn: true}));
+      if (this.checkForm() === true) {
+        const user = { login: this.login, password: this.password }
+        await fetch(`http://127.0.0.1:8000/user/create`, {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }).catch((e) => error = true)
 
+        if (!error) {
+          this.$store.commit(LOG_IN_USER, { ...user, isLoggedIn: true })
+          this.msg = 'You are logged in!'
+          this.title = "";
+          this.content = "";
+          this.status = true
 
-      this.title = "";
-      this.content = "";
+          router.push('/')
+        } else {
+          this.msg = 'Log in failed, verify your credentials!'
+          this.status=false
+        }
+        this.show = true
+      }
+
+      const snackBarOptions = {status: this.status, msg: this.msg, show: this.show}
+
+       this.$store.commit(CALL_SNACK_BAR, snackBarOptions)
+
+       const clearSnackBar = () => {
+         this.$store.commit(CALL_SNACK_BAR, {})
+       }
+
+      setTimeout(clearSnackBar, 3000)
+
 
     },
     checkForm: function (e) {
-      if (this.name && this.age) {
-        return true;
-      }
+
 
       this.errors = [];
 
@@ -65,7 +92,7 @@ export default {
         this.errors.push("Name length should be at least 4 symbols.");
       }
 
-
+      return this.errors.length == 0
     },
   },
 };

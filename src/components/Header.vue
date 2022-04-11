@@ -2,17 +2,34 @@
   <div class="header">
     <router-link to="/" class="logo">HangoutMe</router-link>
     <div class="header-right">
-      <router-link to="/signup" class="active">Sign up</router-link>
-      <a href="#contact">Sign in</a>
-      <a href="#about">Log out</a>
+      <router-link v-if="!this.$store.state.user.isLoggedIn" to="/signup" class="active">Sign up</router-link>
+      <a v-else @click="onLogout">Log out</a>
     </div>
   </div>
 </template>
 
 <script>
+
+import { LOG_OUT_USER } from "../mutation-types"
+import router from '../router';
+
 export default {
   name: "Header",
-};
+  data() {
+    return {
+      log_out: LOG_OUT_USER,
+    };
+  },
+  methods: {
+    onLogout () {
+      router.push("/signup")
+      this.$store.commit(this.log_out)
+    }
+  }
+}
+
+
+
 </script>
 
 <style scoped>
@@ -65,6 +82,7 @@ export default {
     display: block;
     text-align: left;
   }
+
   .header-right {
     float: none;
   }
