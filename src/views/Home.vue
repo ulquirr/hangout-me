@@ -28,7 +28,7 @@ export default {
 
       this.hangouts = [...this.hangouts, hangout];
 
-      console.log(this.hangouts);
+    
     },
   },
 };

@@ -3,28 +3,16 @@
     <form @submit="onSubmit" class="add-form">
       <div class="form-control">
         <label>Login</label>
-        <input
-          type="text"
-          v-model="login"
-          name="login"
-          placeholder="Type your login"
-        />
+        <input type="text" v-model="login" name="login" placeholder="Type your login" />
         <label>Password</label>
-        <textarea
-          rows="5"
-          cols="55"
-          type="password"
-          v-model="password"
-          name="password"
-          placeholder="Type your password"
-        />
+        <input type="password" v-model="password" name="password" placeholder="Type your password" />
       </div>
-        <p v-if="errors.length">
+      <p v-if="errors.length">
         <b>Please correct the following error(s):</b>
-        <ul>
-            <li class="error" v-for="error in errors" :key={error}>{{ error }}</li>
-       </ul>
-        </p>
+      <ul>
+        <li class="error" v-for="error in errors" :key="error"> {{ error }}</li>
+      </ul>
+      </p>
       <input type="submit" value="Sign in" class="btn btn-block" />
     </form>
   </div>
@@ -40,25 +28,24 @@ export default {
       errors: [],
     };
   },
-  async created() {},
+  async created() { },
   methods: {
     async onSubmit(e) {
-        e.preventDefault();
-        this.checkForm()
-    },
-    async addHangout(hangout) {
-      console.log(hangout);
-      await fetch(`http://127.0.0.1:8000/hangout/create`, {
+      e.preventDefault();
+      this.checkForm()
+      const user = {login: this.login, password: this.password }
+      await fetch(`http://127.0.0.1:8000/user/create`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(hangout),
-      });
+        body: JSON.stringify(user),
+      }).finally(() => this.$store.commit('updateUser', {...user, isLoggedIn: true}));
 
-      this.hangouts = [...this.hangouts, hangout];
 
-      console.log(this.hangouts);
+      this.title = "";
+      this.content = "";
+
     },
     checkForm: function (e) {
       if (this.name && this.age) {
@@ -78,7 +65,7 @@ export default {
         this.errors.push("Name length should be at least 4 symbols.");
       }
 
-     
+
     },
   },
 };
@@ -87,8 +74,7 @@ export default {
 
 <style scoped>
 .error {
-    margin-left: 20px;
-    color: red
+  margin-left: 20px;
+  color: red
 }
-
 </style>

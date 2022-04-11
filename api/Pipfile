@@ -8,6 +8,9 @@ fastapi = "*"
 uvicorn = {extras = ["standard"], version = "*"}
 sqlalchemy = "*"
 mysql-connector-python = "*"
+passlib = "*"
+bcrypt = "*"
+python-jose = "*"
 
 [dev-packages]
 

@@ -1,8 +1,6 @@
 <template>
   <div>
-  <Header
-      title="Create Hangout"
-    />
+    <Header title="Create Hangout" />
     <router-view></router-view>
   </div>
 </template>
