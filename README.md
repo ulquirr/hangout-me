@@ -1,4 +1,4 @@
-# Vue.js/Fast.api application - airplane tracking . using aviastack API
+# Vue.js/Fast.api application - creating hangouts . share it with friends
 
 
 ## Project setup
