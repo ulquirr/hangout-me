@@ -1,23 +1,19 @@
 <template>
-  <div class="container">
-    <Header
-    
-      title="Airplane Tracker"
+  <div>
+  <Header
+      title="Create Hangout"
     />
     <router-view></router-view>
-    <Footer />
   </div>
 </template>
 
 <script>
 import Header from "./components/Header";
-import Footer from "./components/Footer";
 
 export default {
   name: "App",
   components: {
     Header,
-    Footer,
   },
 };
 </script>
@@ -33,16 +29,6 @@ export default {
 
 body {
   font-family: "Poppins", sans-serif;
-}
-
-.container {
-  max-width: 500px;
-  margin: 30px auto;
-  overflow: auto;
-  min-height: 300px;
-  border: 1px solid steelblue;
-  padding: 30px;
-  border-radius: 5px;
 }
 
 .btn {

@@ -1,38 +1,34 @@
 <template>
-  <SearchFlight @add-flight="addFlight" :api_key="this.api_key" />
+  <CreateHangout @add-hangout="addHangout" />
 </template>
 
 <script>
-import SearchFlight from "../components/SearchFlight";
+import CreateHangout from "../components/CreateHangout";
 export default {
   name: "Home",
   components: {
-    SearchFlight,
+    CreateHangout,
   },
   data() {
     return {
-      fligts: [],
-      api_key: process.env.VUE_APP_API_KEY,
+      hangouts: [],
     };
   },
   async created() {},
   methods: {
-    async addFlight(iata_code) {
-      const res = await fetch(
-        `http://api.aviationstack.com/v1/flights?access_key=${this.api_key}&flight_iata=${iata_code}&limit=1`,
-        {
-          method: "GET",
-        }
-      );
+    async addHangout(hangout) {
+      console.log(hangout);
+      await fetch(`http://127.0.0.1:8000/hangout/create`, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(hangout),
+      });
 
-      const data = await res.json();
+      this.hangouts = [...this.hangouts, hangout];
 
-      this.fligts = [
-        ...this.fligts,
-        data.data[Math.floor(Math.random() * data.data.length)],
-      ];
-
-      console.log(this.fligt);
+      console.log(this.hangouts);
     },
   },
 };
